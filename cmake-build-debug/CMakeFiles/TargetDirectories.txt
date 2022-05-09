@@ -1,0 +1,3 @@
+/cygdrive/c/Users/Admin/CLionProjects/hw2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/cygdrive/c/Users/Admin/CLionProjects/hw2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/cygdrive/c/Users/Admin/CLionProjects/hw2/cmake-build-debug/CMakeFiles/hw2.dir
