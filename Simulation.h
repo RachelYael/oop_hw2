@@ -10,6 +10,8 @@
 #include "Tram.h"
 #include "Rail.h"
 
+#include "Graph.h"
+
 #include <vector>
 
 class Simulation {
@@ -17,6 +19,7 @@ private:
     vector<Vehicle *> vehicle;
 public:
    void test();
+   void GraphTest();
 };
 
 

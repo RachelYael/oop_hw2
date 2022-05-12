@@ -114,6 +114,12 @@ build CMakeFiles/hw2.dir/Simulation.cpp.o: CXX_COMPILER__hw2_Debug /cygdrive/c/U
   OBJECT_DIR = CMakeFiles/hw2.dir
   OBJECT_FILE_DIR = CMakeFiles/hw2.dir
 
+build CMakeFiles/hw2.dir/Graph.cpp.o: CXX_COMPILER__hw2_Debug /cygdrive/c/Users/Admin/CLionProjects/hw2/Graph.cpp || cmake_object_order_depends_target_hw2
+  DEP_FILE = CMakeFiles/hw2.dir/Graph.cpp.o.d
+  FLAGS = -g -std=gnu++11
+  OBJECT_DIR = CMakeFiles/hw2.dir
+  OBJECT_FILE_DIR = CMakeFiles/hw2.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target hw2
@@ -122,7 +128,7 @@ build CMakeFiles/hw2.dir/Simulation.cpp.o: CXX_COMPILER__hw2_Debug /cygdrive/c/U
 #############################################
 # Link the executable hw2.exe
 
-build hw2.exe: CXX_EXECUTABLE_LINKER__hw2_Debug CMakeFiles/hw2.dir/main.cpp.o CMakeFiles/hw2.dir/Vehicle.cpp.o CMakeFiles/hw2.dir/Bus.cpp.o CMakeFiles/hw2.dir/Tram.cpp.o CMakeFiles/hw2.dir/Sprinter.cpp.o CMakeFiles/hw2.dir/Rail.cpp.o CMakeFiles/hw2.dir/Simulation.cpp.o
+build hw2.exe: CXX_EXECUTABLE_LINKER__hw2_Debug CMakeFiles/hw2.dir/main.cpp.o CMakeFiles/hw2.dir/Vehicle.cpp.o CMakeFiles/hw2.dir/Bus.cpp.o CMakeFiles/hw2.dir/Tram.cpp.o CMakeFiles/hw2.dir/Sprinter.cpp.o CMakeFiles/hw2.dir/Rail.cpp.o CMakeFiles/hw2.dir/Simulation.cpp.o CMakeFiles/hw2.dir/Graph.cpp.o
   FLAGS = -g
   LINK_FLAGS = -Wl,--enable-auto-import
   OBJECT_DIR = CMakeFiles/hw2.dir
