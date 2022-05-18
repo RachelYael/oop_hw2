@@ -6,12 +6,16 @@
 #define HW2_SPRINTER_H
 
 #include "Vehicle.h"
-#define TIME 3
 
-class Sprinter : public Vehicle{
+
+class Sprinter : public Vehicle {
 public:
-    Sprinter();
-    string toString();
+    Sprinter() : Vehicle(SPRINTER_TIME, "sprinter") {};
+    Sprinter(int time) : Vehicle(time, "sprinter") {};
+
+    string toString() override {
+        return "Sprinter def time stop is: " + to_string(getDefStopTime());
+    };
 };
 
 

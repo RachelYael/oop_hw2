@@ -4,281 +4,71 @@
 
 #ifndef HW2_GRAPH_H
 #define HW2_GRAPH_H
-#include <iostream>
+
 #include <vector>
-#include <list>
-#include <iterator>
-using namespace std;
+#include <valarray>
+#include "GraphHelper.h"
+#include "Vehicle.h"
 
-
-class Edge{
-public:
-    int DestinationVertexId;
-    int weight;
-    Edge(){}
-    Edge(int destVId, int w){
-        DestinationVertexId = destVId;
-        weight = w;
-    }
-    void setEdgeVal(int destVId, int w){
-        DestinationVertexId = destVId;
-        weight = w;
-    }
-    void setWeight(int w){
-        weight=w;
-    }
-    int getDestinationVertexId(){
-        return DestinationVertexId;
-    }
-    int getWeight(){
-        return weight;
-    }
-
-};
-
-class Vertex{
-public:
-    int stationId;
-    string stationName;
-
-
-    list<Edge> edgeList;
-    Vertex(){
-        stationId= 0;
-        stationName="";
-    }
-    Vertex(int id, string name){
-        stationId= id;
-        stationName= name;
-    }
-
-    int getStationId() const {
-        return stationId;
-    }
-
-    void setStationId(int stationId) {
-        stationId = stationId;
-    }
-
-    string getStationName() const {
-        return stationName;
-    }
-
-    void setStationName(string stationName) {
-        stationName = stationName;
-    }
-
-    list<Edge> getEdgeList() {
-        return edgeList;
-    }
-    void printEdgeList() {
-//        cout << "[";
-        for (auto it = edgeList.begin(); it != edgeList.end(); it++) {
-            cout << it -> getDestinationVertexId() << "(" << it -> getWeight() << ") --> ";
-//            cout << it -> getStationName() << "(" << it -> getWeight() << ") --> ";
-        }
-//        cout << "]";
-        cout << endl;
-    }
-};
-class Graph{
+class Graph {
 public:
     vector<Vertex> vertices;
+    Vehicle *vehicle;
 
-    bool checkIfVertexExistByID(int vid) {
-        bool flag = false;
-        for (int i = 0; i < vertices.size(); i++) {
-            if (vertices.at(i).getStationId() == vid) {
-                return true;
-            }
-        }
-        return flag;
-    }
+    explicit Graph(string vechile);
+    Graph(string vechile, int inter, int center, int stad);
 
-    void addVertex(Vertex newVertex) {
-        bool check = checkIfVertexExistByID(newVertex.getStationId());
-        if (check == true) {
-            cout << "Vertex with this ID already exist" << endl;
-        } else {
-            vertices.push_back(newVertex);
-            cout << "New Vertex Added Successfully" << endl;
-        }
-    }
+    bool checkIfVertexExistByID(int vid);
 
-    Vertex getVertexByID(int vid) {
-        Vertex temp;
-        for (int i = 0; i < vertices.size(); i++) {
-            temp = vertices.at(i);
-            if (temp.getStationId() == vid) {
-                return temp;
-            }
-        }
-        return temp;
-    }
+    bool checkIfVertexExistByName(string vname);
 
-    bool checkIfEdgeExistByID(int fromVertex, int toVertex) {
-        Vertex v = getVertexByID(fromVertex);
-        list < Edge > e;
-        e = v.getEdgeList();
-        bool flag = false;
-        for (auto it = e.begin(); it != e.end(); it++) {
-            if (it -> getDestinationVertexId() == toVertex) {
-                flag = true;
-                return flag;
-                break;
-            }
+    void addVertex(Vertex newVertex);
 
-        }
-        return flag;
-    }
+//    Vertex getVertexByID(int vid);
+    Vertex getVertexByName(string vname);
 
-    void updateVertex(int oldVID, string vname) {
-        bool check = checkIfVertexExistByID(oldVID);
-        if (check == true) {
-            for (int i = 0; i < vertices.size(); i++) {
-                if (vertices.at(i).getStationId() == oldVID) {
-                    vertices.at(i).setStationName(vname);
-                    break;
-                }
-            }
-            cout << "Vertex(State) Updated Successfully " << endl;
-        }
-    }
+//    bool checkIfEdgeExistByID(int fromVertex, int toVertex);
+    bool checkIfEdgeExistByName(string vfrom, string vto);
 
-    void addEdgeByID(int fromVertex, int toVertex, int weight) {
-        bool check1 = checkIfVertexExistByID(fromVertex);
-        bool check2 = checkIfVertexExistByID(toVertex);
+    void updateVertex(int oldVID, string vname);
 
-        bool check3 = checkIfEdgeExistByID(fromVertex, toVertex);
-        if ((check1 && check2 == true)) {
+//    void addEdgeByID(int fromVertex, int toVertex, int weight);
+    void addEdgeByName(string fromVertex, string toVertex, int weight);
 
-            if (check3 == true) {
-                cout << "Edge between " << getVertexByID(fromVertex).getStationName() << "(" << fromVertex << ") and " << getVertexByID(toVertex).getStationName() << "(" << toVertex << ") Already Exist" << endl;
-            } else {
+    void updateEdgeByName(string fromVertex, string toVertex, int newWeight);
 
-                for (int i = 0; i < vertices.size(); i++) {
+    void deleteEdgeByID(int fromVertex, int toVertex);
 
-                    if (vertices.at(i).getStationId() == fromVertex) {
-                        Edge e(toVertex, weight);
-                        //edgeList.push_back(e);
-                        //vertices.at(i).addEdgeToEdgelist(toVertex,weight);
-                        vertices.at(i).edgeList.push_back(e);
-                    } else if (vertices.at(i).getStationId() == toVertex) {
-                        Edge e(toVertex, weight);
-                        //edgeList.push_back(e);
-                        //vertices.at(i).addEdgeToEdgelist(fromVertex,weight);
-                        vertices.at(i).edgeList.push_back(e);
-                    }
-                }
+    void deleteVertexByID(int vid);
 
-                cout << "Edge between " << fromVertex << " and " << toVertex << " added Successfully" << endl;
-            }
-        } else {
-            cout << "Invalid Vertex ID entered.";
-        }
-    }
+    void printAllNeigborsByName(string vname);
 
-    void updateEdgeByID(int fromVertex, int toVertex, int newWeight) {
-        bool check = checkIfEdgeExistByID(fromVertex, toVertex);
-        if (check == true) {
-            for (int i = 0; i < vertices.size(); i++) {
+    void printGraph();
 
-                if (vertices.at(i).getStationId() == fromVertex) {
-                    for (auto it = vertices.at(i).edgeList.begin(); it != vertices.at(i).edgeList.end(); it++) {
-                        if (it -> getDestinationVertexId() == toVertex) {
-                            it -> setWeight(newWeight);
-                            break;
-                        }
+    void insertUpdateData(string srcName, string destName, string weight);
 
-                    }
+    void printOutbound(string vname);
 
-                } else if (vertices.at(i).getStationId() == toVertex) {
-                    for (auto it = vertices.at(i).edgeList.begin(); it != vertices.at(i).edgeList.end(); it++) {
-                        if (it -> getDestinationVertexId() == fromVertex) {
-                            it -> setWeight(newWeight);
-                            break;
-                        }
+    void printInbound(string vname);
 
-                    }
-                }
-            }
-            cout << "Edge Weight Updated Successfully " << endl;
-        } else {
-            cout << "Edge between " << getVertexByID(fromVertex).getStationName() << "(" << fromVertex << ") and " << getVertexByID(toVertex).getStationName() << "(" << toVertex << ") DOES NOT Exist" << endl;
-        }
-    }
+    void printAllVertexSources(string vname);
 
-    void deleteEdgeByID(int fromVertex, int toVertex) {
-        bool check = checkIfEdgeExistByID(fromVertex, toVertex);
-        if (check == true) {
-            for (int i = 0; i < vertices.size(); i++) {
-                if (vertices.at(i).getStationId() == fromVertex) {
-                    for (auto it = vertices.at(i).edgeList.begin(); it != vertices.at(i).edgeList.end(); it++) {
-                        if (it -> getDestinationVertexId() == toVertex) {
-                            vertices.at(i).edgeList.erase(it);
-                            //cout<<"First erase"<<endl;
-                            break;
-                        }
-                    }
-                }
+    void shortestPathTime(string src, string target);
 
-                if (vertices.at(i).getStationId() == toVertex) {
+    int getEdgeWeight(string src, string target);
 
-                    for (auto it = vertices.at(i).edgeList.begin(); it != vertices.at(i).edgeList.end(); it++) {
-                        if (it -> getDestinationVertexId() == fromVertex) {
-                            vertices.at(i).edgeList.erase(it);
-                            //cout<<"second erase"<<endl;
-                            break;
-                        }
-                    }
-                }
-            }
-            cout << "Edge Between " << fromVertex << " and " << toVertex << " Deleted Successfully." << endl;
-        }
-    }
+private:
+    int intercity=15, central=10, stad=5;
+    bool isIntercity(string vname);
 
-    void deleteVertexByID(int vid) {
-        int vIndex = 0;
-        for (int i = 0; i < vertices.size(); i++) {
-            if (vertices.at(i).getStationId() == vid) {
-                vIndex = i;
-            }
-        }
-        for (int i = 0; i < vertices.size(); i++) {
-            for (auto it = vertices.at(i).edgeList.begin(); it != vertices.at(i).edgeList.end(); it++) {
-                if (it -> getDestinationVertexId() == vid) {
-                    vertices.at(i).edgeList.erase(it);
-                    break;
-                }
-            }
+    bool isCentral(string vname);
 
-        }
-        vertices.erase(vertices.begin() + vIndex);
-        cout << "Vertex Deleted Successfully" << endl;
-    }
+    unsigned int getVertexIndex(string vname);
 
-    void getAllNeigborsByID(int vid) {
-        cout << getVertexByID(vid).getStationName() << " (" << getVertexByID(vid).getStationId() << ") --> ";
-        for (int i = 0; i < vertices.size(); i++) {
-            if (vertices.at(i).getStationId() == vid) {
-                cout << "[";
-                for (auto it = vertices.at(i).edgeList.begin(); it != vertices.at(i).edgeList.end(); it++) {
-                    cout << it -> getDestinationVertexId() << "(" << it -> getWeight() << ") --> ";
-                }
-                cout << "]";
+    int minDist(const long distance[], const bool Tset[]) const;
 
-            }
-        }
+    int getEdgeWeight();
 
-    }
-
-    void printGraph() {
-        for (int i = 0; i < vertices.size(); i++) {
-            Vertex temp;
-            temp = vertices.at(i);
-            cout << temp.getStationName() << " (" << temp.getStationId() << ") --> ";
-            temp.printEdgeList();
-        }
-    }
 };
+
 #endif //HW2_GRAPH_H

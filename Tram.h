@@ -6,12 +6,15 @@
 #define HW2_TRAM_H
 
 #include "Vehicle.h"
-#define TIME 2
 
-class Tram : public Vehicle{
+
+class Tram : public Vehicle {
 public:
-    Tram();
-    string toString();
+    Tram() : Vehicle(TRAM_TIME, "tram") {};
+    Tram(int time) : Vehicle(time, "tram") {};
+    string toString() override {
+        return "Tram def time stop is: " + to_string(getDefStopTime());
+    };
 };
 
 

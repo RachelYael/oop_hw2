@@ -4,14 +4,18 @@
 
 #ifndef HW2_BUS_H
 #define HW2_BUS_H
+
 #include "Vehicle.h"
 
-#define TIME 1
 
-class Bus : public Vehicle{
+class Bus : public Vehicle {
 public:
-    Bus();
-    string toString();
+    Bus() : Vehicle(BUS_TIME, "bus") {};
+    Bus(int time) : Vehicle(time, "bus") {};
+
+    string toString() override {
+        return "Bus def time stop is: " + to_string(getDefStopTime());
+    };
 };
 
 

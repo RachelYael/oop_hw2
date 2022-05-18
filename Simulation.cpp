@@ -3,6 +3,10 @@
 //
 
 #include "Simulation.h"
+Simulation::Simulation() {
+    cout << "hello" << endl;
+
+}
 
 void Simulation::test() {
 
@@ -22,19 +26,19 @@ void Simulation::test() {
     }
 }
 
-void Simulation::GraphTest(){
-    Graph  g = Graph();
-    g.addVertex( Vertex(1,"Slomi"));
-    g.addVertex( Vertex(2,"KOKO"));
-    g.addEdgeByID(1,2,80);
-    g.printGraph();
-
-    bool check = g.checkIfEdgeExistByID(1, 7);
-    if (check == true) {
-        cout << "Vertices are Neigbors (Edge exist)";
-    } else {
-        cout << "Vertices are NOT Neigbors (Edge does NOT exist)";
-    }
-
-
-}
+//void Simulation::GraphTest(){
+//    Graph  g = Graph();
+//    g.addVertex( Vertex(1,"Slomi"));
+//    g.addVertex( Vertex(2,"KOKO"));
+//    g.addEdgeByID(1,2,80);
+//    g.printGraph();
+//
+//    bool check = g.checkIfEdgeExistByID(1, 7);
+//    if (check == true) {
+//        cout << "Vertices are Neigbors (Edge exist)";
+//    } else {
+//        cout << "Vertices are NOT Neigbors (Edge does NOT exist)";
+//    }
+//
+//
+//}

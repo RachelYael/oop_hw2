@@ -18,7 +18,9 @@ class Simulation {
 private:
     vector<Vehicle *> vehicle;
 public:
-   void test();
+    Simulation();
+
+    void test();
    void GraphTest();
 };
 

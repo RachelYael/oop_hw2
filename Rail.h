@@ -6,12 +6,16 @@
 #define HW2_RAIL_H
 
 #include "Vehicle.h"
-#define TIME 5
 
-class Rail :public Vehicle{
+
+class Rail : public Vehicle {
 public:
-    Rail();
-    string toString();
+    Rail() : Vehicle(RAIL_TIME, "rail") {};
+    Rail(int time) : Vehicle(time, "rail") {};
+
+    string toString() override {
+        return "Rail def time stop is: " + to_string(getDefStopTime());
+    };
 };
 
 
