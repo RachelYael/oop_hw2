@@ -24,7 +24,7 @@ public:
 
     void addVertex(Vertex newVertex);
 
-//    Vertex getVertexByID(int vid);
+    Vertex getVertexByID(int vid);
     Vertex getVertexByName(string vname);
 
 //    bool checkIfEdgeExistByID(int fromVertex, int toVertex);
@@ -56,6 +56,8 @@ public:
     void shortestPathTime(string src, string target);
 
     int getEdgeWeight(string src, string target);
+    void reachableFromV(string startVertex); //using BFS
+    void transposeGraph(Graph *g,string vehicle);
 
 private:
     int intercity=15, central=10, stad=5;

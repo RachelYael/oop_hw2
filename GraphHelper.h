@@ -38,7 +38,9 @@ public:
     const string &getDestName() const {
         return destName;
     }
-
+    const string &getSrcName() const {
+        return sourceName;
+    }
     int getWeight() const {
         return weight;
     }

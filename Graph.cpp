@@ -64,16 +64,16 @@ void Graph::addVertex(Vertex newVertex) {
 
 }
 
-//Vertex Graph::getVertexByID(int vid) {
-//    Vertex temp;
-//    for (int i = 0; i < vertices.size(); i++) {
-//        temp = vertices.at(i);
-//        if (temp.getStationId() == vid) {
-//            return temp;
-//        }
-//    }
-//    return temp;
-//}
+Vertex Graph::getVertexByID(int vid) {
+    Vertex temp;
+    for (int i = 0; i < vertices.size(); i++) {
+        temp = vertices.at(i);
+        if (temp.getStationId() == vid) {
+            return temp;
+        }
+    }
+    return temp;
+}
 
 //bool Graph::checkIfEdgeExistByID(int fromVertex, int toVertex) {
 //    Vertex v = getVertexByID(fromVertex);
@@ -247,6 +247,7 @@ void Graph::printGraph() {
     }
 }
 
+
 void Graph::insertUpdateData(string srcName, string destName, string weight) {
     // check if vertices already exists
     bool isExist = checkIfVertexExistByName(srcName);
@@ -296,7 +297,8 @@ Vertex Graph::getVertexByName(string vname) {
 
 void Graph::printOutbound(string vname) {
     cout << vehicle->getType() << ": ";
-    printAllNeigborsByName(vname);
+//    printAllNeigborsByName(vname);
+    reachableFromV(vname);
 }
 
 void Graph::printInbound(string vname) {
@@ -407,11 +409,93 @@ int Graph::getEdgeWeight(string src, string target) {
     return -1;
 }
 
+//void Graph::reachableFromV(string startVertex){
+//    int numVertices = vertices.size();
+//    bool* visited = new bool[numVertices];
+//    for (int i = 0; i < numVertices; i++)
+//        visited[i] = false;
+//    list<int> queue;
+//    int vertexIndex = getVertexIndex(startVertex);
+//    visited[vertexIndex] = true;
+//    queue.push_back(vertexIndex);
+//
+//    list<int>::iterator i;
+//
+//
+//    while (!queue.empty()) {
+//        int currVertex = queue.front();
+//        cout << "Visited " << currVertex << " ";
+//        queue.pop_front();
+//
+//
+//        for (i = adjLists[currVertex].begin(); i != adjLists[currVertex].end(); ++i) {
+//            int adjVertex = *i;
+//            if (!visited[adjVertex]) {
+//                visited[adjVertex] = true;
+//                queue.push_back(adjVertex);
+//            }
+//        }
+//}
+//}
+
+void Graph::reachableFromV(string startVertex) {
+    int vertexIndex = getVertexIndex(startVertex);
+    if(vertexIndex<0){
+        cout<<"no outbound travel"<<endl;
+        return;
+    }
+    int numVertices = vertices.size();
+    vector<bool> visited;
+    visited.resize(numVertices, false);
+
+    // Create a queue for BFS
+    list<int> queue;
+
+    // Mark the current node as visited and enqueue it
+    visited[vertexIndex] = true;
+    queue.push_back(vertexIndex);
+
+    while (!queue.empty()) {
+        // Dequeue a vertex from queue and print it
+        vertexIndex = queue.front();
+//        cout << vertexIndex << " ";
+        cout << getVertexByID(vertexIndex).getStationName() << " ";
+        queue.pop_front();
+
+        // Get all adjacent vertices of the dequeued
+        // vertex s. If a adjacent has not been visited,
+        // then mark it visited and enqueue it
+
+        list<Edge>listV = vertices[vertexIndex].getEdgeList();
+        for (auto adjecent:listV) {
+
+            if (!visited[getVertexIndex(adjecent.getSrcName())]){
+                visited[getVertexIndex(adjecent.getSrcName())] = true;
+                queue.push_back(getVertexIndex(adjecent.getSrcName()));
+            }
+
+        }
 
 
+    }
+}
 
 
+void Graph::transposeGraph(Graph *g, string vehicle){
+    Graph transpose = Graph(vehicle);
+    int size = g->vertices.size();
+    for (int i = 0; i < size; i++){
+        list<Edge>listV = vertices[i].getEdgeList();
+        list<Edge>::iterator it;
+        for ( it = listV.begin() ; it!=listV.end()  ; it ++) {
+            transpose.addVertex(vertices[i]);
+//            transpose.addVertex();// i dont know
+//            transpose.addEdgeByName();
+
+        }
+    }
 
 
+}
 // A class to represent a graph object
 
