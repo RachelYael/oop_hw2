@@ -16,32 +16,26 @@ public:
     Vehicle *vehicle;
 
     explicit Graph(string vechile);
-    Graph(string vechile, int inter, int center, int stad);
 
-    bool checkIfVertexExistByID(int vid);
+    vector<Vertex> &getVertices();
+
+    Graph(string vehicle, int inter, int center, int stad, int stopTime);
+
+    Graph(Graph &&other) noexcept;
 
     bool checkIfVertexExistByName(string vname);
 
     void addVertex(Vertex newVertex);
 
-    Vertex getVertexByID(int vid);
-    Vertex getVertexByName(string vname);
+    Vertex &getVertexByID(int vid);
 
-//    bool checkIfEdgeExistByID(int fromVertex, int toVertex);
+    Vertex* getVertexByName(string vname);
+
     bool checkIfEdgeExistByName(string vfrom, string vto);
 
-    void updateVertex(int oldVID, string vname);
-
-//    void addEdgeByID(int fromVertex, int toVertex, int weight);
     void addEdgeByName(string fromVertex, string toVertex, int weight);
 
     void updateEdgeByName(string fromVertex, string toVertex, int newWeight);
-
-    void deleteEdgeByID(int fromVertex, int toVertex);
-
-    void deleteVertexByID(int vid);
-
-    void printAllNeigborsByName(string vname);
 
     void printGraph();
 
@@ -51,25 +45,22 @@ public:
 
     void printInbound(string vname);
 
-    void printAllVertexSources(string vname);
+    int shortestPathTime(int s, int t, int visited[], string src, string dest);
 
-    void shortestPathTime(string src, string target);
+    vector<string> reachableFromV(string startVertex); //using BFS
 
-    int getEdgeWeight(string src, string target);
-    void reachableFromV(string startVertex); //using BFS
-    void transposeGraph(Graph *g,string vehicle);
+    Graph transposeGraph();
+
+    void printUniExpress(string src, string dest);
 
 private:
-    int intercity=15, central=10, stad=5;
+    int intercity = 15, central = 10, stad = 5;
+
     bool isIntercity(string vname);
 
     bool isCentral(string vname);
 
     unsigned int getVertexIndex(string vname);
-
-    int minDist(const long distance[], const bool Tset[]) const;
-
-    int getEdgeWeight();
 
 };
 

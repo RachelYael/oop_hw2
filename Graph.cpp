@@ -8,10 +8,6 @@
 #include "Sprinter.h"
 #include "Tram.h"
 
-//#define INTERCITY 15
-//#define CENTRAL 10
-//#define STAD 5
-
 Graph::Graph(string vechile) {
     if (vechile == "bus") {
         this->vehicle = new Bus();
@@ -19,36 +15,35 @@ Graph::Graph(string vechile) {
         this->vehicle = new Rail();
     } else if (vechile == "sprinter") {
         this->vehicle = new Sprinter();
-    } else {
+    } else if(vechile == "tram"){
         this->vehicle = new Tram();
+    } else {
+        this->vehicle = new Vehicle();
     }
 }
 
-Graph::Graph(string vechile, int inter, int center, int stad){
-    if (vechile == "bus") {
-        this->vehicle = new Bus();
-    } else if (vechile == "rail") {
-        this->vehicle = new Rail();
-    } else if (vechile == "sprinter") {
-        this->vehicle = new Sprinter();
+Graph::Graph(string vehicle, int inter, int center, int stad, int stopTime) {
+    if (vehicle == "bus") {
+        this->vehicle = new Bus(stopTime);
+    } else if (vehicle == "rail") {
+        this->vehicle = new Rail(stopTime);
+    } else if (vehicle == "sprinter") {
+        this->vehicle = new Sprinter(stopTime);
     } else {
-        this->vehicle = new Tram();
+        this->vehicle = new Tram(stopTime);
     }
     this->intercity = inter;
-    this->central=center;
-    this->stad=stad;
+    this->central = center;
+    this->stad = stad;
 }
-//bool Graph::checkIfVertexExistByID(int vid)  {
-//    for (int i = 0; i < vertices.size(); i++) {
-//        if (vertices.at(i).getStationId() == vid) {
-//            return true;
-//        }
-//    }
-//    return false;
-//}
+
+Graph::Graph(Graph &&other) noexcept {
+    vertices = other.vertices;
+    vehicle = other.vehicle;
+}
 
 bool Graph::checkIfVertexExistByName(string vname) {
-    for (int i = 0; i < vertices.size(); i++) {
+    for (unsigned int i = 0; i < vertices.size(); i++) {
         if (vertices.at(i).getStationName().compare(vname) == 0) {
             return true;
         }
@@ -61,72 +56,11 @@ void Graph::addVertex(Vertex newVertex) {
     if (!check) {
         vertices.push_back(newVertex);
     }
-
 }
 
-Vertex Graph::getVertexByID(int vid) {
-    Vertex temp;
-    for (int i = 0; i < vertices.size(); i++) {
-        temp = vertices.at(i);
-        if (temp.getStationId() == vid) {
-            return temp;
-        }
-    }
-    return temp;
+Vertex& Graph::getVertexByID(int vid) {
+    return vertices[vid];
 }
-
-//bool Graph::checkIfEdgeExistByID(int fromVertex, int toVertex) {
-//    Vertex v = getVertexByID(fromVertex);
-//    list<Edge> e;
-//    e = v.getEdgeList();
-//    for (auto it = e.begin(); it != e.end(); it++) {
-//        if (it->getDestId() == toVertex) {
-//            return true;
-//            break;
-//        }
-//    }
-//    return false;
-//}
-
-//void Graph::updateVertex(int oldVID, string vname) {
-//    bool check = checkIfVertexExistByID(oldVID);
-//    if (check) {
-//        for (int i = 0; i < vertices.size(); i++) {
-//            if (vertices.at(i).getStationId() == oldVID) {
-//                vertices.at(i).setStationName(vname);
-//                break;
-//            }
-//        }
-//        cout << "Vertex(State) Updated Successfully " << endl;
-//    }
-//}
-
-//void Graph::addEdgeByID(int fromVertex, int toVertex, int weight) {
-//    bool check1 = checkIfVertexExistByID(fromVertex);
-//    bool check2 = checkIfVertexExistByID(toVertex);
-//
-//    bool check3 = checkIfEdgeExistByID(fromVertex, toVertex);
-//    if ((check1 && check2)) {
-//
-//        if (check3) {
-//            cout << "Edge between " << getVertexByID(fromVertex).getStationName() << "(" << fromVertex << ") and "
-//                 << getVertexByID(toVertex).getStationName() << "(" << toVertex << ") Already Exist" << endl;
-//        } else {
-//
-//            for (int i = 0; i < vertices.size(); i++) {
-//
-//                if (vertices.at(i).getStationId() == fromVertex) {
-//                    Edge e(fromVertex, toVertex, weight);
-//                    vertices.at(i).edgeList.push_back(e);
-//                }
-//            }
-//
-//            cout << "Edge between " << fromVertex << " and " << toVertex << " added Successfully" << endl;
-//        }
-//    } else {
-//        cout << "Invalid Vertex ID entered.";
-//    }
-//}
 
 void Graph::addEdgeByName(string fromVertex, string toVertex, int weight) {
     bool check = checkIfEdgeExistByName(fromVertex, toVertex);
@@ -169,79 +103,11 @@ void Graph::updateEdgeByName(string fromVertex, string toVertex, int newWeight) 
     }
 }
 
-//void Graph::deleteEdgeByID(int fromVertex, int toVertex) {
-//    bool check = checkIfEdgeExistByID(fromVertex, toVertex);
-//    if (check) {
-//        for (int i = 0; i < vertices.size(); i++) {
-//            if (vertices.at(i).getStationId() == fromVertex) {
-//                for (auto it = vertices.at(i).edgeList.begin(); it != vertices.at(i).edgeList.end(); it++) {
-//                    if (it->getDestId() == toVertex) {
-//                        vertices.at(i).edgeList.erase(it);
-//                        //cout<<"First erase"<<endl;
-//                        break;
-//                    }
-//                }
-//            }
-//
-//            if (vertices.at(i).getStationId() == toVertex) {
-//
-//                for (auto it = vertices.at(i).edgeList.begin(); it != vertices.at(i).edgeList.end(); it++) {
-//                    if (it->getDestId() == fromVertex) {
-//                        vertices.at(i).edgeList.erase(it);
-//                        //cout<<"second erase"<<endl;
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//        cout << "Edge Between " << fromVertex << " and " << toVertex << " Deleted Successfully." << endl;
-//    }
-//}
-
-//void Graph::deleteVertexByID(int vid) {
-//    int vIndex = 0;
-//    for (int i = 0; i < vertices.size(); i++) {
-//        if (vertices.at(i).getStationId() == vid) {
-//            vIndex = i;
-//        }
-//    }
-//    for (int i = 0; i < vertices.size(); i++) {
-//        for (auto it = vertices.at(i).edgeList.begin(); it != vertices.at(i).edgeList.end(); it++) {
-//            if (it->getDestId() == vid) {
-//                vertices.at(i).edgeList.erase(it);
-//                break;
-//            }
-//        }
-//
-//    }
-//    vertices.erase(vertices.begin() + vIndex);
-//    cout << "Vertex Deleted Successfully" << endl;
-//}
-
-void Graph::printAllNeigborsByName(string vname) {
-    if (vertices.empty()) {
-        cout << " no outbound travel" << endl;
-        return;
-    }
-    for (Vertex &v: vertices) {
-        if (v.getStationName() == vname) {
-            if (v.getEdgeList().empty()) {
-                cout << " no outbound travel" << endl;
-            }
-            int i = 0;
-            for (Edge &e: v.getEdgeList()) {
-                if (i == v.getEdgeList().size() - 1) {
-                    cout << e.getDestName() << endl;
-                } else {
-                    cout << e.getDestName() << "\t";
-                }
-                i++;
-            }
-        }
-    }
-}
-
 void Graph::printGraph() {
+    cout << this->vehicle->getType() << ":" << endl;
+    if(vertices.empty()) {
+        cout << "this network is empty." << endl;
+    }
     for (Vertex &v: vertices) {
         v.printEdgeList();
     }
@@ -249,7 +115,7 @@ void Graph::printGraph() {
 
 
 void Graph::insertUpdateData(string srcName, string destName, string weight) {
-    // check if vertices already exists
+    // check if vertices already exist
     bool isExist = checkIfVertexExistByName(srcName);
     if (!isExist) {
         if (isIntercity(srcName)) {
@@ -265,7 +131,7 @@ void Graph::insertUpdateData(string srcName, string destName, string weight) {
     if (!isExist) {
         if (isIntercity(destName)) {
             addVertex(Vertex(destName, intercity));
-        } else if (isCentral(srcName)) {
+        } else if (isCentral(destName)) {
             addVertex(Vertex(destName, central));
         } else {
             addVertex(Vertex(destName, stad));
@@ -285,94 +151,60 @@ bool Graph::isCentral(string vname) {
     return s == "CS";
 }
 
-Vertex Graph::getVertexByName(string vname) {
-    Vertex temp;
-    for (int i = 0; i < vertices.size(); i++) {
-        if (temp.getStationName() == vname) {
-            return temp;
+Vertex* Graph::getVertexByName(string vname) {
+    for(Vertex &v: vertices) {
+        if(v.getStationName() == vname) {
+            return &v;
         }
     }
-    return temp;
+    return nullptr;
 }
 
 void Graph::printOutbound(string vname) {
     cout << vehicle->getType() << ": ";
-//    printAllNeigborsByName(vname);
-    reachableFromV(vname);
+    int vertexIndex = getVertexIndex(vname);
+    if (vertexIndex == -1) {
+        cout << vname << " does not exist in the current network." << endl;
+        return;
+    }
+    if(vertices[vertexIndex].getEdgeList().empty()) {
+        cout << "no outbound travel" << endl;
+        return;
+    }
+    vector<string> r = reachableFromV(vname);
+    for(string &s: r) {
+        cout << s << "\t";
+    }
+    cout << endl;
 }
 
 void Graph::printInbound(string vname) {
-    cout << vehicle->getType() << ": ";
-    printAllVertexSources(vname);
+    Graph transposed(move(transposeGraph()));
+    transposed.printOutbound(vname);
 }
 
-void Graph::printAllVertexSources(string vname) {
-    if (vertices.empty()) {
-        cout << " no inbound travel" << endl;
-        return;
+int Graph::shortestPathTime(int s, int t, int visited[], string src, string dest) {
+    if (s == t) {
+        return 0;
     }
-    vector<string> inbounds;
-    for (Vertex &v: vertices) {
-        for (Edge &e: v.getEdgeList()) {
-            if (e.getDestName() == vname) {
-                inbounds.push_back(v.getStationName());
+
+    visited[s] = 1;
+    long int ans = INTMAX_MAX;
+    for(Edge &e: vertices[s].getEdgeList()){
+        if(visited[getVertexIndex(e.getDestName())] == 0) {
+            long int curr = shortestPathTime(getVertexIndex(e.getDestName()), t, visited, src, dest);
+            if(curr < INTMAX_MAX) {
+                if(e.getDestName() == src || e.getDestName() == dest) {
+                    ans = min(ans, e.getWeight() + curr);
+                } else {
+                    ans = min(ans, e.getWeight() + curr+ this->vehicle->getDefStopTime());
+                }
             }
         }
     }
 
-    if (inbounds.empty()) {
-        cout << " no inbound travel" << endl;
-        return;
-    }
-
-    int i = 0;
-    for (string &s: inbounds) {
-        if (i == inbounds.size() - 1) {
-            cout << s << endl;
-        } else {
-            cout << s << "\t";
-        }
-        i++;
-    }
-}
-
-void Graph::shortestPathTime(string src, string target) {
-    int srcIndex = getVertexIndex(src);
-    int targetIndex = getVertexIndex(target);
-    if (srcIndex == -1 || targetIndex == -1) {
-
-    }
-
-    int size = vertices.size();
-    long int distance[size];
-    bool Tset[size];
-
-    for (int i = 0; i < size; i++) {
-        distance[i] = INTMAX_MAX;
-        Tset[i] = false;
-    }
-
-    distance[srcIndex] = 0;
-
-    for (unsigned int i = 0; i < size; i++) {
-        int m = minDist(distance, Tset);
-        Tset[m] = true;
-        for (unsigned int j = 0; j < size; j++) {
-            // updating the distance of neighbouring vertex
-            bool isEdge = checkIfEdgeExistByName(vertices[m].getStationName(), vertices[j].getStationName());
-            int edgeWeight = getEdgeWeight(vertices[m].getStationName(), vertices[j].getStationName());
-            if (!Tset[i] && isEdge && distance[m] != INTMAX_MAX && distance[m] + edgeWeight < distance[j])
-                distance[j] = distance[m] + edgeWeight;
-
-        }
-        cout<<"Vertex\t\tDistance from source vertex"<<endl;
-        for(int k = 0; k<6; k++)
-        {
-            char str=65+k;
-            cout<<str<<"\t\t\t"<<distance[k]<<endl;
-        }
-
-    }
+    visited[s] = 0;
+    return ans;
 }
 
 unsigned int Graph::getVertexIndex(string vname) {
@@ -384,66 +216,9 @@ unsigned int Graph::getVertexIndex(string vname) {
     return -1;
 }
 
-int Graph::minDist(const long distance[], const bool Tset[]) const {
-    long int minimum = INTMAX_MAX, ind;
-    for (int i = 0; i < vertices.size(); i++) {
-        if (!Tset[i] && distance[i] <= minimum) {
-            minimum = distance[i];
-            ind = i;
-        }
-    }
-    return ind;
-
-}
-
-int Graph::getEdgeWeight(string src, string target) {
-    for (Vertex &v: vertices) {
-        if (v.getStationName() == src) {
-            for (Edge &e: v.getEdgeList()) {
-                if (e.getDestName() == target) {
-                    return e.getWeight();
-                }
-            }
-        }
-    }
-    return -1;
-}
-
-//void Graph::reachableFromV(string startVertex){
-//    int numVertices = vertices.size();
-//    bool* visited = new bool[numVertices];
-//    for (int i = 0; i < numVertices; i++)
-//        visited[i] = false;
-//    list<int> queue;
-//    int vertexIndex = getVertexIndex(startVertex);
-//    visited[vertexIndex] = true;
-//    queue.push_back(vertexIndex);
-//
-//    list<int>::iterator i;
-//
-//
-//    while (!queue.empty()) {
-//        int currVertex = queue.front();
-//        cout << "Visited " << currVertex << " ";
-//        queue.pop_front();
-//
-//
-//        for (i = adjLists[currVertex].begin(); i != adjLists[currVertex].end(); ++i) {
-//            int adjVertex = *i;
-//            if (!visited[adjVertex]) {
-//                visited[adjVertex] = true;
-//                queue.push_back(adjVertex);
-//            }
-//        }
-//}
-//}
-
-void Graph::reachableFromV(string startVertex) {
+vector<string> Graph::reachableFromV(string startVertex) {
+    vector<string> reachable;
     int vertexIndex = getVertexIndex(startVertex);
-    if(vertexIndex<0){
-        cout<<"no outbound travel"<<endl;
-        return;
-    }
     int numVertices = vertices.size();
     vector<bool> visited;
     visited.resize(numVertices, false);
@@ -458,44 +233,73 @@ void Graph::reachableFromV(string startVertex) {
     while (!queue.empty()) {
         // Dequeue a vertex from queue and print it
         vertexIndex = queue.front();
-//        cout << vertexIndex << " ";
-        cout << getVertexByID(vertexIndex).getStationName() << " ";
+        if(getVertexByID(vertexIndex).getStationName() != startVertex) {
+            reachable.push_back(getVertexByID(vertexIndex).getStationName());
+        }
         queue.pop_front();
+
 
         // Get all adjacent vertices of the dequeued
         // vertex s. If a adjacent has not been visited,
         // then mark it visited and enqueue it
 
-        list<Edge>listV = vertices[vertexIndex].getEdgeList();
-        for (auto adjecent:listV) {
-
-            if (!visited[getVertexIndex(adjecent.getSrcName())]){
-                visited[getVertexIndex(adjecent.getSrcName())] = true;
-                queue.push_back(getVertexIndex(adjecent.getSrcName()));
+        list<Edge> listV = vertices[vertexIndex].getEdgeList();
+        for (Edge &e: listV) {
+            vertexIndex = getVertexIndex(e.getDestName());
+            if (!visited[vertexIndex]) {
+                visited[vertexIndex] = true;
+                queue.push_back(vertexIndex);
             }
-
         }
-
-
     }
+    return reachable;
 }
 
 
-void Graph::transposeGraph(Graph *g, string vehicle){
-    Graph transpose = Graph(vehicle);
-    int size = g->vertices.size();
-    for (int i = 0; i < size; i++){
-        list<Edge>listV = vertices[i].getEdgeList();
-        list<Edge>::iterator it;
-        for ( it = listV.begin() ; it!=listV.end()  ; it ++) {
-            transpose.addVertex(vertices[i]);
-//            transpose.addVertex();// i dont know
-//            transpose.addEdgeByName();
-
-        }
+Graph Graph::transposeGraph() {
+    Graph transpose(this->vehicle->getType());
+    for(Vertex &v: this->vertices){
+        transpose.addVertex(Vertex(v.getStationName(), 0));
     }
 
-
+    for(Vertex &v: this->vertices){
+        for(Edge &e: v.getEdgeList()) {
+            transpose.addEdgeByName(e.getDestName(), e.getSrcName(), e.getWeight());
+        }
+    }
+    return transpose;
 }
-// A class to represent a graph object
 
+void Graph::printUniExpress(string src, string dest) {
+    cout << vehicle->getType() << ": ";
+    int srcIndex = getVertexIndex(src);
+    int destIndex = getVertexIndex(dest);
+    if(srcIndex == -1) { // check if source node exists
+        cout << src << " does not exist in the current network." << endl;
+        return;
+    }
+    if(destIndex == -1) {  // check if destination node exists
+        cout << dest << " does not exist in the current network." << endl;
+        return;
+    }
+
+    // check if destination nose is reachable from source node
+    vector<string> r = reachableFromV(src);
+    if(!count(r.begin(), r.end(), dest)){
+        cout << "route unavailable" << endl;
+        return;
+    }
+
+    // fins the shortest path between 2 nodes
+    int visited[vertices.size()];
+    for (unsigned int i = 0; i < vertices.size(); i++) {
+        visited[i] = 0;
+    }
+    visited[srcIndex] = 1;
+    int time = shortestPathTime(srcIndex, destIndex, visited, src, dest);
+    cout << time << endl;
+}
+
+vector<Vertex> &Graph::getVertices(){
+    return vertices;
+}
